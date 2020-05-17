@@ -11,22 +11,30 @@ cross = ""
 for i in range(len(text)):
     cross = cross + (text[i])
 
-tokens = [t for t in cross.split()]
+tokenization = [t for t in cross.split()]
 
-clean_tokens = tokens[:]
+clean_tokenization = tokenization[:]
 
-sr = stopwords.words('english')
+english_sw_up = [element.upper() for element in stopwords.words('english')]
+spanish_sw_up = [element.upper() for element in stopwords.words('spanish')]
+english_sw_low = [element.lower() for element in stopwords.words('english')]
+spanish_sw_low = [element.lower() for element in stopwords.words('spanish')]
 
-for token in tokens:
+for token in tokenization:
 
-    if token in stopwords.words('english'):
+    if token in english_sw_up:
+        clean_tokenization.remove(token)
 
-        clean_tokens.remove(token)
+    elif token in spanish_sw_up:
+        clean_tokenization.remove(token)
 
-freq = nltk.FreqDist(clean_tokens)
+    elif token in english_sw_low:
+        clean_tokenization.remove(token)
 
-for key,val in freq.items():
+    elif token in spanish_sw_low:
+        clean_tokenization.remove(token)
 
-    print (str(key) + ':' + str(val))
-    
-freq.plot(20,cumulative=False)
+frequency = nltk.FreqDist(clean_tokenization)
+
+frequency.plot(20,cumulative=False)
+
